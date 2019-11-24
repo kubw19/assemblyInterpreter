@@ -47,4 +47,34 @@ public interface JFKListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPush(JFKParser.PushContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JFKParser#interrupt}.
+	 * @param ctx the parse tree
+	 */
+	void enterInterrupt(JFKParser.InterruptContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JFKParser#interrupt}.
+	 * @param ctx the parse tree
+	 */
+	void exitInterrupt(JFKParser.InterruptContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JFKParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpression(JFKParser.ExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JFKParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpression(JFKParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JFKParser#operation}.
+	 * @param ctx the parse tree
+	 */
+	void enterOperation(JFKParser.OperationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JFKParser#operation}.
+	 * @param ctx the parse tree
+	 */
+	void exitOperation(JFKParser.OperationContext ctx);
 }

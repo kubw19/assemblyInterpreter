@@ -1,55 +1,97 @@
 package com.Visitors;
 
+import com.Parser;
+import com.Registers;
+import com.Stack;
+import com.antlr4.JFKBaseVisitor;
 import com.antlr4.JFKParser;
-import com.antlr4.JFKVisitor;
-import org.antlr.v4.runtime.tree.ErrorNode;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class Visitors implements JFKVisitor {
+public class Visitors extends JFKBaseVisitor {
     @Override
     public String visitEntry(JFKParser.EntryContext ctx) {
-        System.out.println("Tutaj entry");
-        visitChildren(ctx.command());
-        return "123";
+        visitChildren(ctx);
+        return  null;
     }
 
     @Override
     public Object visitCommand(JFKParser.CommandContext ctx) {
-        System.out.println("Command here");
+        if(ctx.children != null){
+            visitChildren(ctx);
+        }
+        else{
+           // System.err.println("Please specify a command!");
+        }
         return null;
     }
 
     @Override
     public Object visitMov(JFKParser.MovContext ctx) {
-        System.out.println("hej");
+        Integer value = visitExpression(ctx.expression());
+        String target = ctx.REGISTERS().toString();
+        switch(target){
+            case "%eax":
+                Registers.set(Registers.Reg.EAX, value);
+                break;
+            case "%ebx":
+                Registers.set(Registers.Reg.EBX, value);
+                break;
+            case "%ecx":
+                Registers.set(Registers.Reg.ECX, value);
+                break;
+            case "%edx":
+                Registers.set(Registers.Reg.EDX, value);
+        }
         return null;
     }
 
     @Override
     public Object visitPush(JFKParser.PushContext ctx) {
-        System.out.println("to jest pushek");
+        if(ctx.expression() == null){
+            //System.err.println("ERROR");
+            return null;
+        }
+        Stack.push(visitExpression(ctx.expression()));
         return null;
     }
 
     @Override
-    public Object visit(ParseTree tree) {
+    public Integer visitExpression(JFKParser.ExpressionContext ctx){
+        if(ctx.REGISTERS() != null){
+            switch(ctx.REGISTERS().toString()){
+                case "%eax":
+                    return Registers.get(Registers.Reg.EAX);
+                case "%ebx":
+                    return Registers.get(Registers.Reg.EBX);
+                case "%ecx":
+                    return Registers.get(Registers.Reg.ECX);
+                case "%edx":
+                    return Registers.get(Registers.Reg.EDX);
+            }
+        }
+        if(ctx.NUMBER() != null){
+            return Integer.valueOf(ctx.NUMBER().toString());
+        }
+        if(ctx.operation() != null){
+            switch(ctx.operation().OP().toString()){
+                case "+":
+                    return visitExpression(ctx.expression(0)) + visitExpression(ctx.expression(1));
+                case "-":
+                    return visitExpression(ctx.expression(0)) - visitExpression(ctx.expression(1));
+                case "*":
+                    return visitExpression(ctx.expression(0)) * visitExpression(ctx.expression(1));
+            }
+        }
+
+        if(ctx.expression() != null)
+            return visitExpression(ctx.expression(0));
         return null;
     }
 
     @Override
-    public Object visitChildren(RuleNode node) {
-        return null;
-    }
-
-    @Override
-    public Object visitTerminal(TerminalNode node) {
-        return null;
-    }
-
-    @Override
-    public Object visitErrorNode(ErrorNode node) {
+    public Object visitInterrupt(JFKParser.InterruptContext ctx){
+        if(ctx.NUMBER().toString().equals("80")){
+            System.out.println(Stack.last());
+        }
         return null;
     }
 }

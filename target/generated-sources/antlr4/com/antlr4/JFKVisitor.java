@@ -34,4 +34,22 @@ public interface JFKVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPush(JFKParser.PushContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JFKParser#interrupt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInterrupt(JFKParser.InterruptContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JFKParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpression(JFKParser.ExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JFKParser#operation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOperation(JFKParser.OperationContext ctx);
 }

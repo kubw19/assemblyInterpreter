@@ -39,4 +39,25 @@ public class JFKBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements JF
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitPush(JFKParser.PushContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitInterrupt(JFKParser.InterruptContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitExpression(JFKParser.ExpressionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitOperation(JFKParser.OperationContext ctx) { return visitChildren(ctx); }
 }

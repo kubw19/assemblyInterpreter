@@ -1,17 +1,29 @@
 grammar JFK;
 
-entry: command EOF;
+entry: command WHITESPACE* EOF;
 command: push
-       | mov;
+       | mov
+       | interrupt;
 
-mov: 'test';
+mov: 'mov' WHITESPACE+ expression WHITESPACE* ',' + WHITESPACE* REGISTERS;
 
-push: 'push ' (DIGITS | REGISTERS);
+push: 'push' WHITESPACE+  expression;
+
+interrupt: 'int' WHITESPACE+ '0x'NUMBER;
+
+expression: NUMBER
+           | REGISTERS
+           |  expression WHITESPACE* operation WHITESPACE* expression
+           | '(' expression ')';
+
+operation: OP;
+
+REGISTERS: '%'('eax' | 'ebx' | 'ecx' | 'edx');
+
+OP: ('+'|'-'|'*');
+
+WHITESPACE: (' ' | '\t');
 
 
-REGISTERS: '%eax' | '%ebx' | '%ecx' | '%edx';
-
-WHITESPACE: (' ' | '\t') ;
-
-DIGITS: [-]?[0-9]+;
+NUMBER: [0-9]+;
 
