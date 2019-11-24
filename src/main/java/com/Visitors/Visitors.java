@@ -28,19 +28,23 @@ public class Visitors extends JFKBaseVisitor {
     public Object visitMov(JFKParser.MovContext ctx) {
         Integer value = visitExpression(ctx.expression());
         String target = ctx.REGISTERS().toString();
-        switch(target){
-            case "%eax":
-                Registers.set(Registers.Reg.EAX, value);
-                break;
-            case "%ebx":
-                Registers.set(Registers.Reg.EBX, value);
-                break;
-            case "%ecx":
-                Registers.set(Registers.Reg.ECX, value);
-                break;
-            case "%edx":
-                Registers.set(Registers.Reg.EDX, value);
+        Registers.set(target, value);
+        return null;
+    }
+
+    @Override
+    public Object visitXor(JFKParser.XorContext ctx) {
+        String target = ctx.REGISTERS().toString();
+        Integer valueLeft = visitExpression(ctx.expression());
+        Integer valueRight = Registers.get(target);
+        //System.out.println(valueLeft);
+        //System.out.println(valueRight);
+        if((valueLeft == null && valueRight == null) || valueLeft.equals(valueRight)){
+            Registers.set(target, 0);
+        } else{
+            Registers.set(target, valueLeft ^ valueRight);
         }
+
         return null;
     }
 
@@ -57,28 +61,20 @@ public class Visitors extends JFKBaseVisitor {
     @Override
     public Integer visitExpression(JFKParser.ExpressionContext ctx){
         if(ctx.REGISTERS() != null){
-            switch(ctx.REGISTERS().toString()){
-                case "%eax":
-                    return Registers.get(Registers.Reg.EAX);
-                case "%ebx":
-                    return Registers.get(Registers.Reg.EBX);
-                case "%ecx":
-                    return Registers.get(Registers.Reg.ECX);
-                case "%edx":
-                    return Registers.get(Registers.Reg.EDX);
-            }
+            return Registers.get(ctx.REGISTERS().toString());
         }
         if(ctx.NUMBER() != null){
             return Integer.valueOf(ctx.NUMBER().toString());
         }
-        if(ctx.operation() != null){
+        if(ctx.mult != null){
+            return visitExpression(ctx.expression(0)) * visitExpression(ctx.expression(1));
+        }
+        else if(ctx.operation() != null){
             switch(ctx.operation().OP().toString()){
                 case "+":
                     return visitExpression(ctx.expression(0)) + visitExpression(ctx.expression(1));
                 case "-":
                     return visitExpression(ctx.expression(0)) - visitExpression(ctx.expression(1));
-                case "*":
-                    return visitExpression(ctx.expression(0)) * visitExpression(ctx.expression(1));
             }
         }
 

@@ -1,24 +1,42 @@
 package com;
 
 public class Registers {
-    private static Integer eax = null;
-    private static Integer ebx = null;
-    private static Integer ecx = null;
-    private static Integer edx = null;
+    private static volatile Integer eax = null;
+    private static volatile Integer ebx = null;
+    private static volatile Integer ecx = null;
+    private static volatile Integer edx = null;
 
-    public static enum Reg {
-        EAX(eax), EBX(ebx), ECX(ecx), EDX(edx);
-        Integer value;
-        private Reg(Integer register){
-            this.value = register;
+    public static void set(String reg, Integer val){
+        switch(reg){
+            case "%eax":
+                eax = Integer.valueOf(val);
+                break;
+            case "%ebx":
+                ebx = Integer.valueOf(val);
+                break;
+            case "%ecx":
+                ecx = Integer.valueOf(val);
+                break;
+            case "%edx":
+                edx = Integer.valueOf(val);
         }
     }
-
-    public static void set(Reg reg, Integer val){
-        reg.value = val;
-    }
-
-    public static Integer get(Reg reg){
-        return reg.value;
+    public static Integer get(String reg){
+        Integer toReturn = null;
+        switch(reg) {
+            case "%eax":
+                toReturn = eax;
+                break;
+            case "%ebx":
+                toReturn =  ebx;
+                break;
+            case "%ecx":
+                toReturn = ecx;
+                break;
+            case "%edx":
+                toReturn = edx;
+                break;
+        }
+        return toReturn;
     }
 }

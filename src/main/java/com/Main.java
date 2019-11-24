@@ -13,7 +13,6 @@ class Main {
 
     public static void main(String[] args) {
         Scanner a = new Scanner(System.in);
-        Registers.set(Registers.Reg.EAX, 124);
         while (a.hasNextLine()) {
             JFKParser parser = Parser.parse(a.nextLine());
             Visitors visitor = new Visitors();
