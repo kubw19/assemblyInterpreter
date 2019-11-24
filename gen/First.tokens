@@ -1,0 +1,8 @@
+T__0=1
+T__1=2
+REGISTERS=3
+COMMAND=4
+WHITESPACE=5
+DIGITS=6
+'test'=1
+'push '=2

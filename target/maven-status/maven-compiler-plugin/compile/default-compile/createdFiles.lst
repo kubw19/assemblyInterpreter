@@ -1,0 +1,13 @@
+com\Main.class
+com\Visitors\Visitors.class
+com\antlr4\JFKBaseListener.class
+com\antlr4\JFKParser$PushContext.class
+com\antlr4\JFKVisitor.class
+com\Errors.class
+com\antlr4\JFKParser$CommandContext.class
+com\antlr4\JFKParser.class
+com\antlr4\JFKParser$MovContext.class
+com\antlr4\JFKParser$EntryContext.class
+com\antlr4\JFKLexer.class
+com\antlr4\JFKListener.class
+com\antlr4\JFKBaseVisitor.class
